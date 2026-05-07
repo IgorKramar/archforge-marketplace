@@ -13,6 +13,5 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/IgorKramar/krait-arch-marketplace",
-  "repository": "https://github.com/IgorKramar/krait-arch-marketplace",
-  "hooks": "./hooks/hooks.json"
+  "repository": "https://github.com/IgorKramar/krait-arch-marketplace"
 }
