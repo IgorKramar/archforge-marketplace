@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "krait-arch-marketplace",
+  "version": "0.2.0",
+  "description": "Marketplace hosting krait_arch — an architecture skills plugin for Claude Code.",
+  "owner": {
+    "name": "Igor Kramar",
+    "email": "i@ikramar.ru"
+  },
+  "plugins": [
+    {
+      "name": "krait_arch",
+      "source": "./plugins/krait_arch",
+      "description": "Architecture toolkit: Discover → Design → Decide → Document → Review cycle, with skills for C4, ADR, system design, code review, and research.",
+      "category": "development",
+      "keywords": [
+        "architecture",
+        "system-design",
+        "adr",
+        "c4",
+        "code-review",
+        "compound-engineering"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "krait_arch",
+  "version": "0.2.0",
+  "description": "Architecture toolkit for Claude Code. A staff/principal-grade architect on tap, organized as a Discover → Design → Decide → Document → Review cycle. Includes a router skill, narrow specialist skills (C4, ADR, system design, code review, research, frontend, backend, AI agents), slash commands, sub-agents, and a project-level ARCHITECTURE.md template.",
+  "keywords": [
+    "architecture",
+    "system-design",
+    "adr",
+    "c4",
+    "code-review",
+    "compound-engineering"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/IgorKramar/krait-arch-marketplace",
+  "repository": "https://github.com/IgorKramar/krait-arch-marketplace",
+  "hooks": "./hooks/hooks.json"
+}
