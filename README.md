@@ -15,7 +15,7 @@ A Claude Code [plugin marketplace](https://docs.claude.com/en/docs/claude-code/p
 From inside Claude Code:
 
 ```text
-/plugin marketplace add https://github.com/your-org/krait-arch-marketplace
+/plugin marketplace add https://github.com/IgorKramar/krait-arch-marketplace
 /plugin install krait_arch@krait-arch-marketplace
 ```
 
