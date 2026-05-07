@@ -2,6 +2,12 @@
 
 All notable changes to `krait_arch` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - Hook schema fix
+
+### Fixed
+- `hooks/hooks.json` now wraps events under the top-level `hooks` key as required by Claude Code's hook validator schema.
+- Removed `hooks` field from `plugin.json` — Claude Code auto-discovers `hooks/hooks.json` from the plugin root.
+
 ## [0.2.0] - Compound Engineering integration + bilingual docs + Russian language discipline
 
 ### Added
