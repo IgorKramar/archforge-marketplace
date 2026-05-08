@@ -137,9 +137,40 @@ If the user's request is actually about debugging, naming, code style, or "how d
 
 ## Language and terminology
 
-Match the user's language. If the user writes in Russian, respond and produce all artifacts (ADRs, ARCHITECTURE.md, reviews) in Russian.
+Match the user's language. If the user writes in Russian, respond and produce all artifacts (ADRs, ARCHITECTURE.md, reviews, roast outputs) in Russian.
 
-**Russian technical terminology — avoid англицизм-калька.** When responding in Russian, prefer the established Russian engineering term over a transliterated English one. The transliterated forms ("обзервабилити", "резильентность", "деплоймент", "трейсинг") are common in chats and shallow blog posts but read as low-quality in serious technical documents. Use:
+### The taxonomy — what gets translated, what stays English
+
+Translation in Russian artifacts is **category-driven**, not text-driven. Different kinds of strings get different treatment. Get this taxonomy right and you avoid both directions of failure: english-soup prose ("обзервабилити деплоймент") on one hand, and over-translation that breaks identifiers ("Стратег" instead of `Futurist`, "Главное" instead of the template's `## Headline findings`) on the other.
+
+| Category | Translate? | Examples |
+|---|---|---|
+| **A. Plugin component identifiers** (agent names, command names, skill names) | **NO — never** | `devil-advocate`, `pragmatist`, `junior-engineer`, `compliance-officer`, `futurist`, `architect`, `compound-integration`, `/krait_arch:roast`, `/krait_arch:cycle` |
+| **B. Software, library, and protocol names** | **NO — never** | Postgres, apalis, nginx, gRPC, PgBouncer, Redis, Kafka, Vue, Nuxt, Pinia, Anthropic, Claude |
+| **C. Standard abbreviations** | **NO — never** | ACID, CAP, SLA, SLO, RED, USE, p95, RPS, DSAR, PII, RBAC, ABAC, RLS, BYPASSRLS |
+| **D. Laws, regulations, standards** | **NO — never** | 152-ФЗ, GDPR, HIPAA, SOC2, ISO 27001, PCI DSS |
+| **E. Artifact identifiers** (finding IDs, rule numbers, ADR IDs, section IDs) | **NO — never** | `B-1`, `F1.2`, `CC-3`, `ADR-0001`, `Rule 7`, `O-12` |
+| **F. Plugin template section names** (mandatory headings prescribed by command files) | **NO — keep verbatim** | `## Headline findings`, `## Cross-cutting concerns`, `## Severity counts`, `## Recommended path`, `## Status`, `## Closeout`, `## Conformance with ADRs`, `## Blocking issues`, `## Praise`, `## Per-role outputs` |
+| **G. Project-internal proper nouns** (a named component in the user's codebase) | **NO** when capitalized as a proper noun | `Sanitizer` (the user's module), `LlmGateway` (the user's component), `Orchestrator` (when it refers to a specific named subsystem) |
+| **H. Term-of-art with no clean Russian equivalent** | Keep English; on first occurrence give a short Russian gloss in parentheses | `prompt injection` (атака внедрением в промпт), `confused deputy` (атака через обманутого посредника), `compile-time` (на этапе компиляции), `at-rest encryption` (шифрование данных в состоянии покоя), `fail-closed` (блокирующий по умолчанию), `feature flag` (флаг функциональности) |
+| **I. Calques** — English words transliterated where Russian has a natural equivalent | **YES — translate** per the table below | "обзервабилити" → "наблюдаемость", "деплоймент" → "развёртывание", "spawn (a new ADR)" → "открыть/завести (новый ADR)" |
+| **J. Prose verbs and connectors** | **YES** | "deploy" → "развернуть", "scale up" → "масштабировать", "trigger" → "запустить" |
+
+**Mnemonic**: identifiers stay, prose translates. Anything that has an exact form in the plugin's source files (a name, a section header from `commands/*.md`, a finding ID) is an identifier and must not be translated. Anything that's free prose is candidate for the calque pass.
+
+### Overcorrection is also a failure
+
+If you've just been corrected for using too many calques, the wrong response is to translate **everything you can find**. Specifically, do not:
+
+- Translate agent names. `Devil-advocate` is not "Обвинитель" — it's `Devil-advocate`. The agent is invoked by name; translating it desyncs documentation from the plugin.
+- Translate plugin command names. `/krait_arch:roast` stays `/krait_arch:roast`.
+- Translate template section headers prescribed by command files. The `roast` command's output template requires `## Headline findings` — translating it to `## Главное` makes the artifact diverge from what the next `roast` will produce, breaking comparison.
+- Translate finding IDs. `CC-3` stays `CC-3`, not `СП-3`. IDs cross-reference between documents; translating them silently breaks references.
+- Substitute concepts. `Futurist` is the long-horizon role; "Стратег" is a different concept (strategist) and is not a translation. Concept-substitution under translation pressure is a worse error than the calque it's trying to fix.
+
+If you find yourself translating in a category from the "NO" rows above, **stop**. Restore the original. Apply the calque pass only to prose.
+
+### Calque table — translate these in prose
 
 | Avoid (калька) | Prefer (русский) | Notes |
 |---|---|---|
@@ -168,44 +199,48 @@ Match the user's language. If the user writes in Russian, respond and produce al
 | архитектурный шов | развилка, нерешённая граница, точка расхождения | калька с "architectural seam"; читается громоздко |
 | routing-policy | правила маршрутизации, политика маршрутизации | |
 | pipeline (в описании) | конвейер; pipeline допустим только как имя компонента | |
-| sanitizer (в описании) | очиститель данных, фильтр; sanitizer допустим как имя компонента | |
-| fail-closed / fail-open | блокирующий по умолчанию / пропускающий по умолчанию | в описании поведения |
+| sanitizer (в описании) | очиститель данных, фильтр; `Sanitizer` как имя компонента — оставлять |
+| fail-closed / fail-open | блокирующий / пропускающий по умолчанию | в описании поведения; как term-of-art с гидом — допустимо в кавычках |
 | breaking change | ломающее изменение | |
 | graceful degradation | плавная деградация, постепенное ухудшение | |
+| graceful shutdown | корректное завершение, плавное завершение | |
 | backpressure | противодавление | прижилось |
 | onboarding (в описании) | ввод нового сотрудника, адаптация | |
-| feature flag | флаг функциональности | "feature flag" допустим как термин из инструментария |
+| feature flag (в описании) | флаг функциональности | term-of-art в описании инструментария — допустимо |
 | дашборд | панель, дашборд | оба допустимы; «панель» в формальных документах |
 | фича | функциональность, возможность | в формальных документах |
 | баг | ошибка, дефект | в формальных документах; «баг» допустим в чате |
 | хайповый / хайп | модный, на пике интереса; шумиха | избегать в технических документах |
 | продакшен | production, продакшен | оба допустимы |
 | стейджинг | staging, предпрод | оба допустимы |
-| CI/CD | CI/CD | оставляем как есть |
+| operational baseline | операционный минимум, операционный фундамент | |
+| spawn (a new ADR / cycle) | открыть, завести (новый ADR / цикл) | "spawn" — глагол прозы, не имя |
+| tactical fixes | точечные правки | |
+| wire-код | связующий код, склейка | |
+| sweep-проверка | сплошная проверка | |
+| commit + push | коммит и push | "push" допустимо как имя git-операции |
+| compile-time (в прозе) | на этапе компиляции | в кавычках с гидом — допустимо как term-of-art |
+| confused deputy | оставлять в кавычках, при первом упоминании дать русский гид | устоявшийся term-of-art в безопасности |
+| prompt injection | оставлять, при первом упоминании дать гид | то же |
+| BYPASSRLS | оставлять | это term из Postgres, имя собственное |
 
-**Английские термины оставляются как есть, если:**
-- русского эквивалента нет или он искусственный (CDN, gRPC, REST, WebSocket, JWT, OAuth, SSR, CSR, RAG, LLM, Postgres, Redis, Kafka);
-- это имя собственное (название фреймворка, продукта, протокола);
-- термин — общепринятая аббревиатура (ACID, CAP, SLA, SLO, RED, USE, p95, RPS);
-- это имя архитектурного компонента в самом проекте (Sanitizer, LlmGateway — с заглавной буквы как proper noun).
-
-**Никогда не переводи имена собственные**: Postgres, Vue, Nuxt, Pinia, Anthropic, Claude — пишутся как есть.
-
-**В сомнении — выбирай русский вариант, если он естественно звучит, и английский, если русский получается громоздким или искусственным.** "Dataflow-граф вычислений" лучше, чем "поток-данных-граф вычислений". "API-эндпоинт" лучше, чем "точка входа интерфейса прикладного программирования" (последнее — карикатура).
-
-**В ADR-ах и ARCHITECTURE.md** — литературный технический русский, без чат-сленга. В диалоге с пользователем допустим более свободный стиль, но всё равно в рамках хорошего русского.
+**General rule for unlisted calques**: if the Russian text contains a transliterated English word in **prose** (categories I and J) that has a natural Russian equivalent and would read better with it, replace. Add the new pair to your working memory for the rest of the session. **Never** translate identifiers (categories A–F).
 
 ### Mandatory terminology pass — after generating any Russian artifact
 
-**This is not optional.** After producing any Russian-language document (discovery, research, design, ADR, review, decision-map, ARCHITECTURE.md, integration block), perform a terminology pass before saving:
+**This is not optional.** After producing any Russian-language document (discovery, research, design, ADR, review, decision-map, observation report, roast output, integration block), perform a terminology pass before saving:
 
-1. **Scan the generated text for entries in the "Avoid" column above.** Each occurrence is a candidate for replacement.
-2. **For each candidate**, ask: does the English term refer to a *proper noun in this project* (a named component, e.g., the project's `Sanitizer` module)? If yes — keep capitalized as proper noun. If no — replace with the Russian alternative from the "Prefer" column.
-3. **Calques not in the table** — apply the same judgment: if the Russian text contains a transliterated English word that has a natural Russian equivalent and would read better with it, replace. Add the new pair to your mental list for the rest of the session.
-4. **Do not bulk-translate domain names, library names, or established abbreviations.** "Postgres" stays "Postgres". "REST" stays "REST". The pass is for prose terminology, not for proper nouns.
-5. **State briefly** in chat (one line) when the pass made non-trivial corrections: "терминологический проход: заменил «архитектурный шов» → «развилка» (×3), «routing-policy» → «правила маршрутизации» (×5)." Don't be silent — the user benefits from knowing what was normalized. Don't be verbose — one line is enough.
+1. **Scan the generated text for entries in the "Avoid" column** of the calque table. Each occurrence is a candidate for replacement.
+2. **For each candidate**, ask: is this an identifier (categories A–F)? If yes — leave alone, even if it looks like a calque. If no — replace per the "Prefer" column.
+3. **Verify identifiers are intact.** After translation, scan the document for: agent names from `agents/*.md` (must appear unchanged), command names (must appear with `/krait_arch:` prefix unchanged), template section headers (must match what the relevant `commands/*.md` template prescribes), and finding/ADR IDs (must be unchanged).
+4. **Do not bulk-translate** domain names, library names, established abbreviations, or laws.
+5. **State briefly** in chat (one line) what the pass changed: "терминологический проход: заменил «обзервабилити» → «наблюдаемость» (×4), «spawn нового ADR» → «открыть новый ADR» (×2); идентификаторы (Devil-advocate, ## Headline findings, CC-3) оставлены без изменений." Don't be silent — the user benefits from knowing what was normalized. Don't be verbose — one or two lines is enough.
 
 Skip the pass for English-language artifacts. The English terminology in this plugin is the canonical source — it's not "translated" anywhere.
+
+### Cross-skill enforcement
+
+This terminology rule applies to **all artifacts produced by `krait_arch`**, regardless of which skill or sub-agent generated them. Every sub-agent invoked by this plugin (`architect`, `reviewer`, `researcher`, `devil-advocate`, `pragmatist`, `junior-engineer`, `compliance-officer`, `futurist`, `historian`, `meta-reviewer`) must apply the terminology pass before returning its output. The router skill `architect` is the source of truth; sub-agents reference this section by name when describing their language posture.
 
 ### When to extend the table
 

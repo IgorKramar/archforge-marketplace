@@ -56,6 +56,10 @@ Use the smell catalog from `code-review-architectural`:
 - **Few high-leverage comments beat many shallow ones.**
 - **If the change is fundamentally wrong**, write one detailed diagnosis in `Blocking issues` rather than piling nitpicks.
 
+## Language and terminology
+
+This sub-agent inherits the terminology policy from `architect/SKILL.md`. Match the user's language. Apply the calque pass to prose. Never translate identifiers (agent names, command names, template section headers, finding IDs, software/library names, regulations) — translating them desyncs documentation from plugin source. The full taxonomy and calque table live in `architect/SKILL.md`. State at the end of your output what the terminology pass changed.
+
 ## Output
 
 Return the review as a single Markdown response. The main thread will save it to `docs/architecture/reviews/` if requested.

@@ -2,6 +2,48 @@
 
 All notable changes to `krait_arch` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0-rc2] - Language enforcement extended into sub-agents; new meta-reviewer
+
+This RC fixes a structural bug discovered through real use of v0.4.0-rc1: when the user ran `/krait_arch:roast` on a Russian-language project, the 5 roast sub-agents (`devil-advocate`, `pragmatist`, `junior-engineer`, `compliance-officer`, `futurist`) produced mixed-language outputs because the terminology rule lived only in the `architect` router skill — sub-agents are separate contexts and didn't inherit it. When the user pointed this out, the assistant over-corrected and began translating identifiers (`Devil-advocate` → "Обвинитель", `## Headline findings` → `## Главное`, `CC-3` → `СП-3`), which silently broke cross-references in the roast directory.
+
+The fix is structural, not textual: the language rule is now embedded in every sub-agent's source file, with explicit guards against both undertranslation (calques in prose) and overtranslation (translating identifiers). And a new role exists specifically to catch this kind of plugin-failing-its-own-rules bug.
+
+### Added — meta-reviewer
+
+- **New sub-agent `meta-reviewer`** — checks artifacts produced by `krait_arch` against the plugin's own templates and rules. Five categories: template conformance, identifier preservation, language-pass evidence, cross-reference integrity, lifecycle integrity. Does not evaluate architectural quality (that's `roast`).
+- **New command `/krait_arch:meta-review <target>`** — supports targets: ADR identifier (`ADR-0002`), file path, roast directory, `latest`, `latest-roast`, `all`. Saves to `docs/architecture/reviews/YYYY-MM-DD-meta-review-<slug>.md`.
+- **Auto-meta-review in `/krait_arch:cycle --scale=deep`** — after auto-roast (between Decide and Document) and after Document. High-severity divergences pause the cycle for fixing.
+
+### Changed — language rules
+
+- **`architect/SKILL.md` rewritten Language and terminology section** with a 10-category taxonomy (A–J) that distinguishes identifiers (never translate) from prose (apply the calque pass). Includes an explicit "Overcorrection is also a failure" subsection naming the specific failure modes seen in v0.4.0-rc1.
+- **Calque table extended** with terms that surfaced in real cycles: `operational baseline`, `spawn (a new ADR / cycle)`, `tactical fixes`, `wire-код`, `sweep-проверка`, `compile-time`, `graceful shutdown`, plus term-of-art handling for `confused deputy`, `prompt injection`, `BYPASSRLS`, `fail-closed/fail-open`.
+- **Identifier-preservation rule** is now explicit: agent names, command names, plugin template section headers, finding IDs, software/library names, regulations, and ADR numbers are identifiers and must never be translated. Translating them desyncs documentation from plugin source.
+- **Cross-skill enforcement clause** added — every sub-agent of the plugin (`architect`, `reviewer`, `researcher`, `devil-advocate`, `pragmatist`, `junior-engineer`, `compliance-officer`, `futurist`, `historian`, `meta-reviewer`) must apply the terminology pass before returning output.
+
+### Changed — sub-agents
+
+- **All 5 roast sub-agents now have an explicit `## Language and terminology` section** referencing the `architect` skill's taxonomy. Each agent's section names role-specific identifiers that must not be translated (the `B-N`, `H-N`, `J-N`, `C-N`, `F-N` finding ID schemes; the `Devil-advocate`/`Pragmatist`/etc. role names; the prescribed output structure section headers).
+- **3 core sub-agents (`architect`, `reviewer`, `researcher`)** also have a short language block.
+- Each agent now states at the end of its output what the terminology pass changed.
+
+### Changed — roast command
+
+- `commands/roast.md` has a new `## Language and template integrity` section with explicit rules: section headers in `00-summary.md` stay verbatim English, role names in summary stay English, finding IDs stay Latin, content is translated per the calque pass.
+- Auto-roast in deep cycle now also auto-chains a meta-review on the roast directory; high-severity divergences from the meta-review pause the cycle.
+
+### Migration from 0.4.0-rc1
+
+- The fix is automatic for new artifacts. Existing artifacts written under rc1 may have identifier-translation issues; run `/krait_arch:meta-review all` to surface them, then fix manually.
+- The roast template's section headers must remain English (`## Headline findings`, `## Cross-cutting concerns`, etc.) even when the body is in Russian. If older roasts have Russian headers (`## Главное`), the meta-reviewer flags them as identifier-translation issues.
+- No breaking changes to file paths or schemas.
+
+### Notes for context
+
+This rc was forged from a specific incident: the user ran roast on `ADR-0002` of the Krait project, and the assistant produced output in mixed Russian-with-anglicisms. When called out, the assistant translated identifiers in the over-correction. The user ([@IgorKramar](https://github.com/IgorKramar)) said: "after my correction, it went into the other extreme and started translating even plugin command names — overkilling outright." That observation is the literal motivation for this rc.
+
+The pattern of "the plugin found its own bug through its own roast, then we built the role that catches this kind of bug" is the strongest illustration to date of the compound logic the plugin is designed for.
+
 ## [0.4.0-rc1] - Adversarial roast, project upgrade, gap observation, multi-type diagrams
 
 The 0.4 line builds on the cycle established in 0.3 with three things the architect actually wants but didn't have: a way to attack a decision from multiple angles before declaring it final, a way to find architectural decisions that have been made implicitly (in code, in deferrals) but not documented, and proper diagram support beyond just C4.

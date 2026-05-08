@@ -103,6 +103,10 @@ The marketplace and plugin manifests are deliberately separate. A marketplace ca
 
 For non-Git distribution, the marketplace can be served as a JSON endpoint — see [the official plugin marketplaces docs](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces).
 
+## Roadmap
+
+The plan for v0.5, v0.6, and v0.7 is documented in [ROADMAP.md](./ROADMAP.md). It includes both what's coming and what's deliberately out of scope.
+
 ## License
 
 MIT — see `LICENSE` inside the plugin directory.

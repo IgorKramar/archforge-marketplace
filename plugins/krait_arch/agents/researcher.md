@@ -60,6 +60,10 @@ Follow the protocol from the `architecture-research` skill:
 - **Don't quote large blocks.** Paraphrase. Cite. Stay under the legal/ethical limit on direct quotation.
 - **Distinguish "is" from "should"**. "X is the latest" ≠ "X is the right choice for your project". The main thread makes architectural calls; you supply the inputs.
 
+## Language and terminology
+
+This sub-agent inherits the terminology policy from `architect/SKILL.md`. Match the user's language. Apply the calque pass to prose. Never translate identifiers (agent names, command names, template section headers, finding IDs, software/library names, regulations) — translating them desyncs documentation from plugin source. The full taxonomy and calque table live in `architect/SKILL.md`. State at the end of your output what the terminology pass changed.
+
 ## Output
 
 Return the digest as a single Markdown response. The main thread may save it to `docs/architecture/research/` if appropriate.

@@ -61,7 +61,8 @@ Each phase has a slash command. You can also run the whole cycle for a single pr
 | `/krait_arch:document <topic>` | Phase 4 — emit ADR + update root doc |
 | `/krait_arch:review [path]` | Phase 5 — architectural code review (with closeout tracking) |
 | `/krait_arch:roast <ADR-NNNN\|path> [--roles=...]` | Adversarial multi-perspective review (5 roles) |
-| `/krait_arch:cycle <topic> [--scale=light\|standard\|deep]` | Run the full cycle end-to-end with detail scaled to complexity (auto-roast at deep) |
+| `/krait_arch:meta-review <target>` | Plugin-conformance check — does this artifact match the templates and rules the plugin promised? Catches identifier-translation, template drift, missing language pass, broken cross-references |
+| `/krait_arch:cycle <topic> [--scale=light\|standard\|deep]` | Run the full cycle end-to-end with detail scaled to complexity (auto-roast + auto-meta-review at deep) |
 | `/krait_arch:adr <topic>` | Shortcut: jump straight to ADR drafting |
 | `/krait_arch:diagram <type> <subject>` | Generate a diagram: `c4-context\|c4-container\|c4-component\|sequence\|state\|er\|deployment` |
 | `/krait_arch:c4 <level> <subject>` | Alias for `/krait_arch:diagram c4-<level>` (kept for compatibility) |
@@ -102,6 +103,10 @@ Five roast roles for adversarial multi-perspective review (invoked via `/krait_a
 - **`junior-engineer`** — clarity check from a fresh reader six months later. Undefined terms, unfollowable steps, broken cross-references.
 - **`compliance-officer`** — regulatory and security exposure. PII flows, jurisdiction, audit, incident response.
 - **`futurist`** — 1-3 year horizon. Structural drift, technology lifecycle, hiring, regulatory drift.
+
+One conformance role (invoked via `/krait_arch:meta-review`):
+
+- **`meta-reviewer`** — plugin-conformance QA. Reads artifacts produced by `krait_arch` and verifies they match the plugin's own templates and rules: required sections present and verbatim, identifiers (agent names, command names, finding IDs) untranslated, language pass applied per `architect/SKILL.md`, cross-references resolved, lifecycle states valid. Catches the plugin failing to follow its own rules.
 
 Sub-agents are useful for tasks that would otherwise pollute the main thread with research or large reviews.
 

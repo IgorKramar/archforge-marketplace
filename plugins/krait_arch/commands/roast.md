@@ -151,6 +151,21 @@ Don't dump full role outputs to chat — they're long. The summary is the chat s
 - **No softening for the architect.** The roast exists because polite review is too gentle. Aggregate findings honestly. The architect can argue back; that's the next step.
 - **Severity is per-role, not absolute.** A devil-advocate "high" (data loss) is not the same as a futurist "high" (becomes legacy). Don't sum them as if they were.
 
+## Language and template integrity
+
+The roast's output structure is **prescribed by this command file**. When generating both the per-role documents and the `00-summary.md`, the prescribed section headers (`## Headline findings`, `## Cross-cutting concerns`, `## Severity counts`, `## Recommended path`, `## Per-role outputs`, plus each role's own template headers) **must appear verbatim in English**, even when the body of the document is written in Russian. They are identifiers that the `meta-reviewer` agent and downstream tooling expect.
+
+Specifically, when the project's working language is Russian:
+
+- Section headers stay English (`## Headline findings`, not `## Главное`).
+- Role names in the summary stay English (`Devil-advocate`, `Pragmatist`, `Junior-engineer`, `Compliance-officer`, `Futurist`) — these are identifiers, not concepts to be translated.
+- Finding IDs stay in their Latin form (`B-1`, `H-3`, `J-2`, `C-1`, `F1.2`, `CC-3`).
+- The **content** under each section is written in Russian per the calque pass in `architect/SKILL.md`.
+
+If a previous roast translated section headers or role names (a known regression in v0.4.0-rc1 and earlier), that artifact diverged from the template. New roasts produce verbatim-English structure with translated prose. Use `/krait_arch:meta-review <roast-directory>` to verify a roast's structural integrity.
+
+The summary author is responsible for this discipline at the summary level; each sub-agent is responsible for it in its own document.
+
 ## Auto-roast in `/krait_arch:cycle --scale=deep`
 
 When `cycle --scale=deep` reaches the end of Decide and before Document, automatically invoke roast on the decision summary. Pause for user to review. The user then decides:

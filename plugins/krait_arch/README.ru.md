@@ -57,7 +57,8 @@
 | `/krait_arch:document <тема>` | Фаза 4 — выпустить ADR и обновить корневой документ |
 | `/krait_arch:review [путь]` | Фаза 5 — архитектурное код-ревью (с отслеживанием закрытия findings) |
 | `/krait_arch:roast <ADR-NNNN\|путь> [--roles=...]` | Прожарка артефакта 5 ролями с разных перспектив |
-| `/krait_arch:cycle <тема> [--scale=light\|standard\|deep]` | Прогнать весь цикл с детализацией под сложность задачи (auto-roast в deep) |
+| `/krait_arch:meta-review <цель>` | Проверка соответствия артефакта шаблонам и правилам самого плагина — ловит перевод идентификаторов, дрейф шаблона, отсутствие языкового прохода, битые ссылки |
+| `/krait_arch:cycle <тема> [--scale=light\|standard\|deep]` | Прогнать весь цикл с детализацией под сложность задачи (auto-roast + auto-meta-review в deep) |
 | `/krait_arch:adr <тема>` | Быстрый путь — сразу написать ADR |
 | `/krait_arch:diagram <тип> <тема>` | Сгенерировать диаграмму: `c4-context\|c4-container\|c4-component\|sequence\|state\|er\|deployment` |
 | `/krait_arch:c4 <уровень> <тема>` | Алиас для `/krait_arch:diagram c4-<уровень>` (для совместимости) |
