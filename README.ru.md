@@ -1,29 +1,29 @@
-# krait_arch marketplace
+# archforge marketplace
 
 [English](./README.md) | **Русский**
 
-Маркетплейс плагинов [Claude Code](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces), содержащий **`krait_arch`** — архитектурный инструментарий, превращающий Claude Code в собеседника уровня staff/principal-инженера для архитектурных задач.
+Маркетплейс плагинов [Claude Code](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces), содержащий **`archforge`** — архитектурный инструментарий, превращающий Claude Code в собеседника уровня staff/principal-инженера для архитектурных задач.
 
 ## Что внутри
 
 | Плагин | Назначение |
 |---|---|
-| **`krait_arch`** | Цикл Discover → Design → Decide → Document → Review. Маршрутизирующий скилл `architect` плюс специализированные скиллы (C4, ADR, проектирование систем, фронт/бэк/AI-агенты, архитектурное код-ревью, исследование). Slash-команды, сабагенты, мягкие предупреждающие хуки. Интеграция с плагином Compound Engineering от EveryInc. |
+| **`archforge`** | Цикл Discover → Design → Decide → Document → Review. Маршрутизирующий скилл `architect` плюс специализированные скиллы (C4, ADR, проектирование систем, фронт/бэк/AI-агенты, архитектурное код-ревью, исследование). Slash-команды, сабагенты, мягкие предупреждающие хуки. Интеграция с плагином Compound Engineering от EveryInc. |
 
 ## Установка
 
 В Claude Code:
 
 ```text
-/plugin marketplace add https://github.com/IgorKramar/krait-arch-marketplace
-/plugin install krait_arch@krait-arch-marketplace
+/plugin marketplace add https://github.com/IgorKramar/archforge-marketplace
+/plugin install archforge@archforge-marketplace
 ```
 
 Для локальной разработки (сначала склонируй репозиторий):
 
 ```text
-/plugin marketplace add /absolute/path/to/krait-arch-marketplace
-/plugin install krait_arch@krait-arch-marketplace
+/plugin marketplace add /absolute/path/to/archforge-marketplace
+/plugin install archforge@archforge-marketplace
 ```
 
 После установки запусти `/reload-plugins` (или перезапусти Claude Code) и проверь через `/plugin list`.
@@ -33,7 +33,7 @@
 В любом проекте:
 
 ```text
-/krait_arch:init
+/archforge:init
 ```
 
 Эта команда подготавливает проект: создаёт `ARCHITECTURE.md` и каркас `docs/architecture/` (decisions, diagrams, research, reviews).
@@ -41,45 +41,45 @@
 Дальше — цикл:
 
 ```text
-/krait_arch:discover     # фаза 1 — собрать ограничения, силы, прецеденты
-/krait_arch:design       # фаза 2 — предложить 2–3 альтернативы с компромиссами
-/krait_arch:decide       # фаза 3 — выбрать одну с явным обоснованием
-/krait_arch:document     # фаза 4 — написать ADR + обновить ARCHITECTURE.md
-/krait_arch:review       # фаза 5 — архитектурное ревью кода
+/archforge:discover     # фаза 1 — собрать ограничения, силы, прецеденты
+/archforge:design       # фаза 2 — предложить 2–3 альтернативы с компромиссами
+/archforge:decide       # фаза 3 — выбрать одну с явным обоснованием
+/archforge:document     # фаза 4 — написать ADR + обновить ARCHITECTURE.md
+/archforge:review       # фаза 5 — архитектурное ревью кода
 ```
 
 Или сразу к специализированной команде:
 
 ```text
-/krait_arch:adr "переход с REST на gRPC для межсервисного взаимодействия"
-/krait_arch:c4 container "веб-приложение и его зависимости"
-/krait_arch:cycle "введение очереди для исходящих уведомлений"
+/archforge:adr "переход с REST на gRPC для межсервисного взаимодействия"
+/archforge:c4 container "веб-приложение и его зависимости"
+/archforge:cycle "введение очереди для исходящих уведомлений"
 ```
 
 Маршрутизирующий скилл `architect` активируется автоматически, как только в разговоре появляется архитектурная тема — даже без slash-команд.
 
-Полная документация плагина — в [`plugins/krait_arch/README.ru.md`](./plugins/krait_arch/README.ru.md).
+Полная документация плагина — в [`plugins/archforge/README.ru.md`](./plugins/archforge/README.ru.md).
 
 ## Интеграция с Compound Engineering
 
 Если в проекте установлен плагин [`compound-engineering`](https://github.com/EveryInc/compound-engineering-plugin) от EveryInc, выполни один раз:
 
 ```text
-/krait_arch:remember-compound-integration
+/archforge:remember-compound-integration
 ```
 
-Эта команда записывает в `AGENTS.md` проекта правила взаимодействия двух плагинов. После этого Claude в любой сессии знает, как чередовать архитектурный цикл `krait_arch` с цикломом CE (Brainstorm → Plan → Work → Review → Compound) — без дублирования работы.
+Эта команда записывает в `AGENTS.md` проекта правила взаимодействия двух плагинов. После этого Claude в любой сессии знает, как чередовать архитектурный цикл `archforge` с цикломом CE (Brainstorm → Plan → Work → Review → Compound) — без дублирования работы.
 
 ## Структура распространения
 
 ```
-krait-arch-marketplace/
+archforge-marketplace/
 ├── .claude-plugin/
 │   └── marketplace.json        ← это ищет /plugin marketplace add
 ├── README.md                   ← английская версия
 ├── README.ru.md                ← этот файл
 └── plugins/
-    └── krait_arch/             ← сам плагин
+    └── archforge/             ← сам плагин
         ├── .claude-plugin/
         │   └── plugin.json
         ├── commands/
@@ -98,7 +98,7 @@ krait-arch-marketplace/
 
 1. Форкни или скопируй этот репозиторий.
 2. Обнови `.claude-plugin/marketplace.json` — поля `name` и `owner`.
-3. Обнови `plugins/krait_arch/.claude-plugin/plugin.json`, если меняешь идентичность плагина (переименование, версия).
+3. Обнови `plugins/archforge/.claude-plugin/plugin.json`, если меняешь идентичность плагина (переименование, версия).
 4. Запушь в публичный Git-хост (GitHub / GitLab / собственный сервер).
 5. Пользователи устанавливают через `/plugin marketplace add <url-репозитория>`.
 

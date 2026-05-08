@@ -1,15 +1,15 @@
 # Roadmap
 
-This document describes the planned evolution of `krait_arch` through versions 0.5, 0.6, and 0.7. It is **not a commitment to ship by a specific date** — it's a commitment to a direction, with each version having a coherent theme rather than being a grab-bag of features.
+This document describes the planned evolution of `archforge` through versions 0.5, 0.6, and 0.7. It is **not a commitment to ship by a specific date** — it's a commitment to a direction, with each version having a coherent theme rather than being a grab-bag of features.
 
 ## Principles
 
 A few guardrails that bind every version on this roadmap:
 
 1. **Every feature is forged on real use.** Items here exist because something in actual practice (mine or a user's) made them necessary. Speculation gets parked, not built. If a v0.4 cycle doesn't surface evidence that v0.5 needs feature X, we don't build feature X — we update the roadmap.
-2. **No feature creep into adjacent products.** `krait_arch` is an architectural-thinking tool. It does not become a project tracker, a code generator, a documentation website builder, or a team management tool. When ideas point in those directions, they're rejected — see "Out of scope" below.
+2. **No feature creep into adjacent products.** `archforge` is an architectural-thinking tool. It does not become a project tracker, a code generator, a documentation website builder, or a team management tool. When ideas point in those directions, they're rejected — see "Out of scope" below.
 3. **The plugin should not grow past what one engineer can hold in their head.** Each minor version adds at most a handful of commands, agents, or skills. Once a single user can no longer remember what the plugin offers without consulting the README, we've gone too far.
-4. **Backward compatibility within the 0.x line.** Renames get aliases (as `c4-diagrams` got `architectural-diagrams` in 0.4). Schemas evolve additively. `/krait_arch:upgrade` handles the migrations.
+4. **Backward compatibility within the 0.x line.** Renames get aliases (as `c4-diagrams` got `architectural-diagrams` in 0.4). Schemas evolve additively. `/archforge:upgrade` handles the migrations.
 5. **Bias to skills over commands.** Skills compound; commands proliferate. When a feature can be a skill loaded by existing commands, prefer that.
 
 ## Anti-roadmap — what's deliberately out of scope
@@ -32,15 +32,15 @@ Things that will not appear in any 0.x version, no matter how often asked:
 
 **When.** After v0.4 has been used on at least 3 real cycles by at least 2 users, with feedback collected. We don't ship v0.5 on top of unvalidated v0.4.
 
-### Headline feature: `/krait_arch:diff <ADR-NNNN>`
+### Headline feature: `/archforge:diff <ADR-NNNN>`
 
 Check whether an accepted ADR still lives in the code.
 
 The command extracts the **verifiable architectural rules** from a given ADR (usually the numbered constraints in the Decision section), then walks the actual codebase to check each one. Output is a structured diff: which rules are upheld, which are violated, which can't be checked from source.
 
-This addresses a real failure mode: ADRs accumulate, code drifts, and no one notices until a regression surfaces a year later. `/krait_arch:diff` makes the drift visible at any time, without requiring a code review.
+This addresses a real failure mode: ADRs accumulate, code drifts, and no one notices until a regression surfaces a year later. `/archforge:diff` makes the drift visible at any time, without requiring a code review.
 
-The command is read-only — it never modifies code or the ADR. It outputs a report and offers to run `/krait_arch:roast` on the violations or to open a superseding-ADR cycle.
+The command is read-only — it never modifies code or the ADR. It outputs a report and offers to run `/archforge:roast` on the violations or to open a superseding-ADR cycle.
 
 ### New skill: `architectural-anti-patterns`
 
@@ -72,7 +72,7 @@ Operational definitions for the words that get used loosely in architectural con
 
 This is not an analytics dashboard. It's a vocabulary skill — when `roast` or `review` or `observe` runs, the agents have a sharper way to express what they're seeing.
 
-### New command: `/krait_arch:export [--format=md|html|pdf|zip]`
+### New command: `/archforge:export [--format=md|html|pdf|zip]`
 
 Bundle the project's architectural artifacts into a portable package for sharing — for blog posts, portfolio submissions, onboarding handoffs, archival.
 
@@ -82,7 +82,7 @@ Defaults: a single Markdown file with TOC and resolved cross-references. Options
 
 ### Smaller changes
 
-- `/krait_arch:roast` gains a `--severity-threshold=high|medium|low` flag — by default, only `high` and `medium` are surfaced in the chat summary; the full role outputs always include all severities.
+- `/archforge:roast` gains a `--severity-threshold=high|medium|low` flag — by default, only `high` and `medium` are surfaced in the chat summary; the full role outputs always include all severities.
 - The `architect` skill's calque table grows (driven by what real cycles actually produce — pattern from v0.3).
 - `decision-map.md` adds a `## Resolved` section so closed decisions stay visible without bloating the active sections.
 
@@ -91,7 +91,7 @@ Defaults: a single Markdown file with TOC and resolved cross-references. Options
 - No new agents. The 8 agents in v0.4 are enough; if we find a gap, it's a v0.6 conversation.
 - No new diagram types. Five is enough.
 - No project-management integration.
-- No automatic application of `/krait_arch:diff` findings — the command finds drift; the human (with Claude's help) decides what to do about it.
+- No automatic application of `/archforge:diff` findings — the command finds drift; the human (with Claude's help) decides what to do about it.
 
 ---
 
@@ -111,9 +111,9 @@ A new sub-agent that reads the **archive** of architectural work for a project a
 - What patterns recur across decisions — both productive (consistently choosing the modular path) and worrying (consistently underestimating operational cost)?
 - Where in the timeline did the project's architectural posture genuinely shift, and why?
 
-The historian is invoked manually via `/krait_arch:retro [--period=quarter|half|year]`, or as part of v0.6's quarterly review flow.
+The historian is invoked manually via `/archforge:retro [--period=quarter|half|year]`, or as part of v0.6's quarterly review flow.
 
-### New command: `/krait_arch:retro <period>`
+### New command: `/archforge:retro <period>`
 
 Architectural retrospective. Runs `historian` over a named time window and surfaces:
 
@@ -127,7 +127,7 @@ Output is saved to `docs/architecture/retros/YYYY-Qn.md` and forms the seed for 
 
 ### Pre-commit hooks support
 
-Optional integration with git pre-commit hooks. A new command `/krait_arch:install-git-hooks` installs project-level hooks that:
+Optional integration with git pre-commit hooks. A new command `/archforge:install-git-hooks` installs project-level hooks that:
 
 - Warn (don't block) when a commit touches package manifests but doesn't modify any ADR.
 - Warn when >10 files change and no ADR / decision-map / ARCHITECTURE.md is touched.
@@ -143,13 +143,13 @@ The install command is idempotent and respects existing hook setups (husky, pre-
 
 - Decisions get **temporal metadata** — when added, when last reviewed, when expected to be revisited.
 - A new `## Stale` section automatically lists decisions deferred more than 6 months without resolution or re-deferral.
-- The `/krait_arch:map` command can take a `--age-check` flag to surface decisions whose "wait for" condition appears to have been met.
+- The `/archforge:map` command can take a `--age-check` flag to surface decisions whose "wait for" condition appears to have been met.
 
 ### Smaller changes
 
-- `/krait_arch:upgrade` gains a `--dry-run` flag for environments where automatic mutation is risky.
+- `/archforge:upgrade` gains a `--dry-run` flag for environments where automatic mutation is risky.
 - The `compound-integration` block in `AGENTS.md` learns about CE workflow versions — re-running on a new CE version produces a diff of what changed in the integration, not a silent overwrite.
-- `/krait_arch:observe` gains historical awareness — items that were observed previously and explicitly dismissed by the user don't surface again unless re-introduced.
+- `/archforge:observe` gains historical awareness — items that were observed previously and explicitly dismissed by the user don't surface again unless re-introduced.
 
 ### What v0.6 does not do
 
@@ -196,15 +196,15 @@ This is governance-light, not governance-heavy. The plugin doesn't replace whate
 
 `STRATEGY.md` becomes a first-class artifact alongside `ARCHITECTURE.md`:
 
-- A template lives in the plugin, generated by `/krait_arch:init --with-strategy` for new projects.
+- A template lives in the plugin, generated by `/archforge:init --with-strategy` for new projects.
 - `STRATEGY.md` is read by `discover`, `design`, `roast/futurist`, and `historian` as authoritative product context.
-- Changes to `STRATEGY.md` can trigger a `/krait_arch:observe` to surface architectural implications of strategic shifts.
+- Changes to `STRATEGY.md` can trigger a `/archforge:observe` to surface architectural implications of strategic shifts.
 
 A new artifact: `INVARIANTS.md`. Architectural invariants — things that must remain true regardless of which decisions get superseded. Smaller than `ARCHITECTURE.md`, more durable than ADRs. Examples: "user data never leaves the EU jurisdiction", "all writes are auditable", "no service may have direct access to another service's database". Maintained as an append-only list with rare retractions; each invariant references the ADRs that depend on it.
 
 ### Smaller changes
 
-- `/krait_arch:export --format=presentation` produces a slide-deck-shaped Markdown for presentations to non-architects.
+- `/archforge:export --format=presentation` produces a slide-deck-shaped Markdown for presentations to non-architects.
 - The `architect` skill gets a `team-mode` flag (autodetected from `STRATEGY.md` team size) that adjusts pushback intensity — solo architects get the full hold-position-and-argue treatment; team architects get a softer "here's what I'd argue" framing because the actual deliberation happens with humans.
 - A new sub-agent: `historian-for-onboarding` — produces a structured "what an architect joining this project must know" document by reading the full archive.
 
@@ -220,9 +220,9 @@ A new artifact: `INVARIANTS.md`. Architectural invariants — things that must r
 
 Beyond v0.7, several directions become possible. None of them is committed; each requires evidence from real use.
 
-- **Domain-specific skill packs.** A `krait_arch-fintech` extension with regulation-specific defaults, terminology, and anti-patterns. Or `krait_arch-ml` for ML-system architecture. These would ship as separate plugins consuming `krait_arch` as a base.
+- **Domain-specific skill packs.** A `archforge-fintech` extension with regulation-specific defaults, terminology, and anti-patterns. Or `archforge-ml` for ML-system architecture. These would ship as separate plugins consuming `archforge` as a base.
 - **First-class learning loop.** A version of `historian` that doesn't just observe history but proposes structural changes to the project's architectural process based on what it sees — meta-architecture for the architectural work itself.
-- **Multi-repo orchestration.** Architectural work that spans multiple repositories (microservices, monorepos with multiple deployable units). Today, `krait_arch` assumes one repo; this would be a structural change.
+- **Multi-repo orchestration.** Architectural work that spans multiple repositories (microservices, monorepos with multiple deployable units). Today, `archforge` assumes one repo; this would be a structural change.
 - **Public ADR registries.** A convention for sharing ADRs across organizations — open-source projects publishing their architectural decisions in a discoverable format.
 
 These are speculative and will only enter a real roadmap when there's pressure from real use to address them.
