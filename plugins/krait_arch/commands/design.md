@@ -35,7 +35,13 @@ A design document with:
 
 5. **Comparison matrix** — alternatives × the top 3–5 forces, with one-word scoring (good / fair / poor / N/A).
 
-6. **What you'd need to know to decide** — the missing inputs that, once known, would tip the choice. This bridges to phase 3.
+6. **What we explicitly do NOT consider — and why.** Architectural research and discovery often surface options that look reasonable on the surface but are wrong for this specific situation. Capturing them with one-line dismissals prevents the next person (or the user, six months later) from re-litigating the same dead ends. List 2–6 such options with one-line reasons:
+   - "MongoDB — not considered: Postgres covers all our access patterns; introducing a second engine without need is operational debt."
+   - "Microservices split — not considered: single team, single product, premature."
+   - "Self-hosted Kafka — not considered: managed Pub/Sub is cheaper at our scale and we have no replay requirements."
+   This section is **not** the alternatives list — these never made it to alternatives because forces ruled them out fast.
+
+7. **What you'd need to know to decide** — the missing inputs that, once known, would tip the choice. This bridges to phase 3.
 
 ## Output location
 

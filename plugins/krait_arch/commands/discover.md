@@ -54,9 +54,23 @@ Save the discovery document to `docs/architecture/research/YYYY-MM-DD-<slug>.md`
 - **Use `architecture-research` for any version-sensitive claim.**
 - **If existing ADRs apply, name them by number** and explain how.
 
+## When the user answers — second round of discover
+
+After the user answers the open questions, **do not jump straight to design**. Run a second pass through the discovery document with the new information, looking for:
+
+1. **Push-back opportunities.** Did the user answer something that contradicts the forces you identified? Did they ask for capability X when their stated constraints (team size, budget, time) make X unrealistic? If yes — push back explicitly. Quote the contradiction and propose a deferral or a scope reduction. Do not soft-cave: if the architecture skill considers an answer weak, argue for the alternative until the user provides a real counter-argument.
+
+2. **Constraints surfaced by answers.** Sometimes answers reveal a constraint that wasn't visible in round 1. ("We can only deploy to <region>" → re-evaluate provider availability; "The product must work offline" → re-evaluate the entire async strategy.) Add the new constraint to the document explicitly.
+
+3. **Questions resolved vs deferred.** Mark each open question as resolved (with the resolution) or deferred (with a "wait for" condition). A question silently dropped is a hidden assumption.
+
+Append this as **Section 7: Second round of discover** to the same document, dated. Do not overwrite Section 6 — the trail of how the problem was understood matters.
+
+If round 2 produces material new constraints or push-backs, **do not auto-proceed to design**. Tell the user: "second round surfaced these gaps — confirm before proceeding to design."
+
 ## Output to chat
 
 Tell the user:
 - Where the document was saved.
 - The 3–7 open questions, prioritized.
-- A suggestion: "When you've answered these, run `/krait_arch:design \"<problem>\"` to move to phase 2."
+- A suggestion (path A): "When you've answered these, I'll run a second-round pass and push back on anything that doesn't fit. Then run `/krait_arch:design \"<problem>\"` (or `/krait_arch:research` first if any answers depend on current info)."

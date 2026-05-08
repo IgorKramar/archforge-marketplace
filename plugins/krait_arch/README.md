@@ -51,15 +51,17 @@ Each phase has a slash command. You can also run the whole cycle for a single pr
 | Command | Purpose |
 |---|---|
 | `/krait_arch:init` | Bootstrap project with `ARCHITECTURE.md` and `docs/architecture/` |
+| `/krait_arch:map` | Build a decision map — groups of open architectural decisions with dependencies and order |
 | `/krait_arch:discover <topic>` | Phase 1 — gather context |
+| `/krait_arch:research <topic>` | Phase 1.5 — gather current information from the web (between Discover and Design) |
 | `/krait_arch:design <topic>` | Phase 2 — generate alternatives |
 | `/krait_arch:decide <topic>` | Phase 3 — choose with justification |
 | `/krait_arch:document <topic>` | Phase 4 — emit ADR + update root doc |
-| `/krait_arch:review [path]` | Phase 5 — architectural code review |
-| `/krait_arch:cycle <topic>` | Run all five phases end-to-end |
+| `/krait_arch:review [path]` | Phase 5 — architectural code review (with closeout tracking) |
+| `/krait_arch:cycle <topic> [--scale=light\|standard\|deep]` | Run the full cycle end-to-end with detail scaled to complexity |
 | `/krait_arch:adr <topic>` | Shortcut: jump straight to ADR drafting |
 | `/krait_arch:c4 <level> <topic>` | Generate a C4 diagram (context/container/component) |
-| `/krait_arch:remember-compound-integration` | Materialize the integration with the EveryInc `compound-engineering` plugin in the project's `AGENTS.md` |
+| `/krait_arch:remember-compound-integration [--lang=en\|ru\|auto]` | Materialize the integration with the EveryInc `compound-engineering` plugin in the project's `AGENTS.md` |
 
 All commands respect the project's `ARCHITECTURE.md` and prior ADRs as primary context.
 

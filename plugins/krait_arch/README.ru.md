@@ -47,15 +47,17 @@
 | Команда | Назначение |
 |---|---|
 | `/krait_arch:init` | Подготовить проект — создать `ARCHITECTURE.md` и `docs/architecture/` |
+| `/krait_arch:map` | Построить карту решений — группы открытых архитектурных вопросов с зависимостями и порядком |
 | `/krait_arch:discover <тема>` | Фаза 1 — собрать контекст |
+| `/krait_arch:research <тема>` | Фаза 1.5 — собрать актуальную информацию из веба (между Discover и Design) |
 | `/krait_arch:design <тема>` | Фаза 2 — сгенерировать альтернативы |
 | `/krait_arch:decide <тема>` | Фаза 3 — выбрать с обоснованием |
 | `/krait_arch:document <тема>` | Фаза 4 — выпустить ADR и обновить корневой документ |
-| `/krait_arch:review [путь]` | Фаза 5 — архитектурное код-ревью |
-| `/krait_arch:cycle <тема>` | Прогнать все пять фаз подряд |
+| `/krait_arch:review [путь]` | Фаза 5 — архитектурное код-ревью (с отслеживанием закрытия findings) |
+| `/krait_arch:cycle <тема> [--scale=light\|standard\|deep]` | Прогнать весь цикл с детализацией под сложность задачи |
 | `/krait_arch:adr <тема>` | Быстрый путь — сразу написать ADR |
 | `/krait_arch:c4 <уровень> <тема>` | Сгенерировать C4-диаграмму (context/container/component) |
-| `/krait_arch:remember-compound-integration` | Записать в `AGENTS.md` правила интеграции с плагином `compound-engineering` от EveryInc |
+| `/krait_arch:remember-compound-integration [--lang=en\|ru\|auto]` | Записать в `AGENTS.md` правила интеграции с плагином `compound-engineering` от EveryInc |
 
 Все команды читают `ARCHITECTURE.md` и существующие ADR проекта как обязательный контекст.
 

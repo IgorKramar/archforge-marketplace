@@ -44,7 +44,8 @@ You are bootstrapping this project for architectural work.
 5. **Tell the user**:
    - That `ARCHITECTURE.md` and `docs/architecture/` were created.
    - The 3–5 open questions you put in. These are the seed for the next architectural conversation.
-   - That they can run `/krait_arch:cycle "<topic>"` to walk a real decision through the cycle.
+   - **If the project has existing strategic context** (`STRATEGY.md`, README with rich product description, prior architectural notes) **or you generated ≥3 open questions**: suggest running `/krait_arch:map` next to lay out the dependency graph between decisions before running individual cycles.
+   - **Otherwise**: suggest `/krait_arch:cycle "<topic>"` for a single decision walk-through.
 
 6. **Do not commit**. Leave that to the user.
 

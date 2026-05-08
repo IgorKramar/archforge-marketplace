@@ -127,6 +127,7 @@ Before sending an architectural answer, mentally verify:
 - [ ] If versions or current best practices are referenced, they have been verified via search.
 - [ ] Organizational and team factors considered.
 - [ ] No buzzword sandwiches.
+- [ ] If output is in Russian: terminology pass run against the calques table.
 
 If any item is missing — revise before answering.
 
@@ -164,17 +165,51 @@ Match the user's language. If the user writes in Russian, respond and produce al
 | таймаут | таймаут | прижилось, без боли |
 | ретрай | повтор, повторная попытка | |
 | бэкенд / фронтенд | бэкенд / фронтенд | прижились, оставляем |
+| архитектурный шов | развилка, нерешённая граница, точка расхождения | калька с "architectural seam"; читается громоздко |
+| routing-policy | правила маршрутизации, политика маршрутизации | |
+| pipeline (в описании) | конвейер; pipeline допустим только как имя компонента | |
+| sanitizer (в описании) | очиститель данных, фильтр; sanitizer допустим как имя компонента | |
+| fail-closed / fail-open | блокирующий по умолчанию / пропускающий по умолчанию | в описании поведения |
+| breaking change | ломающее изменение | |
+| graceful degradation | плавная деградация, постепенное ухудшение | |
+| backpressure | противодавление | прижилось |
+| onboarding (в описании) | ввод нового сотрудника, адаптация | |
+| feature flag | флаг функциональности | "feature flag" допустим как термин из инструментария |
+| дашборд | панель, дашборд | оба допустимы; «панель» в формальных документах |
+| фича | функциональность, возможность | в формальных документах |
+| баг | ошибка, дефект | в формальных документах; «баг» допустим в чате |
+| хайповый / хайп | модный, на пике интереса; шумиха | избегать в технических документах |
+| продакшен | production, продакшен | оба допустимы |
+| стейджинг | staging, предпрод | оба допустимы |
+| CI/CD | CI/CD | оставляем как есть |
 
 **Английские термины оставляются как есть, если:**
 - русского эквивалента нет или он искусственный (CDN, gRPC, REST, WebSocket, JWT, OAuth, SSR, CSR, RAG, LLM, Postgres, Redis, Kafka);
 - это имя собственное (название фреймворка, продукта, протокола);
-- термин — общепринятая аббревиатура (ACID, CAP, SLA, SLO, RED, USE, p95, RPS).
+- термин — общепринятая аббревиатура (ACID, CAP, SLA, SLO, RED, USE, p95, RPS);
+- это имя архитектурного компонента в самом проекте (Sanitizer, LlmGateway — с заглавной буквы как proper noun).
 
 **Никогда не переводи имена собственные**: Postgres, Vue, Nuxt, Pinia, Anthropic, Claude — пишутся как есть.
 
 **В сомнении — выбирай русский вариант, если он естественно звучит, и английский, если русский получается громоздким или искусственным.** "Dataflow-граф вычислений" лучше, чем "поток-данных-граф вычислений". "API-эндпоинт" лучше, чем "точка входа интерфейса прикладного программирования" (последнее — карикатура).
 
 **В ADR-ах и ARCHITECTURE.md** — литературный технический русский, без чат-сленга. В диалоге с пользователем допустим более свободный стиль, но всё равно в рамках хорошего русского.
+
+### Mandatory terminology pass — after generating any Russian artifact
+
+**This is not optional.** After producing any Russian-language document (discovery, research, design, ADR, review, decision-map, ARCHITECTURE.md, integration block), perform a terminology pass before saving:
+
+1. **Scan the generated text for entries in the "Avoid" column above.** Each occurrence is a candidate for replacement.
+2. **For each candidate**, ask: does the English term refer to a *proper noun in this project* (a named component, e.g., the project's `Sanitizer` module)? If yes — keep capitalized as proper noun. If no — replace with the Russian alternative from the "Prefer" column.
+3. **Calques not in the table** — apply the same judgment: if the Russian text contains a transliterated English word that has a natural Russian equivalent and would read better with it, replace. Add the new pair to your mental list for the rest of the session.
+4. **Do not bulk-translate domain names, library names, or established abbreviations.** "Postgres" stays "Postgres". "REST" stays "REST". The pass is for prose terminology, not for proper nouns.
+5. **State briefly** in chat (one line) when the pass made non-trivial corrections: "терминологический проход: заменил «архитектурный шов» → «развилка» (×3), «routing-policy» → «правила маршрутизации» (×5)." Don't be silent — the user benefits from knowing what was normalized. Don't be verbose — one line is enough.
+
+Skip the pass for English-language artifacts. The English terminology in this plugin is the canonical source — it's not "translated" anywhere.
+
+### When to extend the table
+
+If during a session you encounter a calque that isn't in the table and you replace it as a judgment call, **mention it to the user** and offer to extend the table (the user can edit `architect/SKILL.md` directly). The table is meant to grow with use, not stay frozen.
 
 ## Tone
 

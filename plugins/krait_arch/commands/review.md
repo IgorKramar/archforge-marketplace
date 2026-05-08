@@ -20,6 +20,10 @@ Phase 5 of the Architecture Cycle. Architectural review of code, with the projec
 Use the `code-review-architectural` skill. Output structure (mandatory):
 
 ```
+## Status
+**Open** — written YYYY-MM-DD by /krait_arch:review.
+(When findings are addressed, this header is updated to "Applied YYYY-MM-DD" with a closeout block at the end.)
+
 ## Summary
 2–3 sentences: what the changes are doing and the main architectural risk or concern.
 
@@ -31,6 +35,7 @@ For each relevant ADR (by number), state whether the change:
 
 ## Blocking issues
 Things that should be fixed before merge. For each:
+- Identifier (B-1, B-2, ...).
 - Pointer to specific code location.
 - Why it's a blocker (architectural reason, not stylistic).
 - Suggested fix.
@@ -44,6 +49,25 @@ Where context wasn't sufficient to evaluate.
 ## Praise
 What's good in this change. Reinforce.
 ```
+
+## Closeout — when blockers are addressed
+
+A review is not done when it's written. It's done when its findings are either applied or explicitly accepted as risk. When you (or a follow-up `/krait_arch:review` invocation) confirm that blockers have been addressed, **update the same review file** by:
+
+1. Changing the `## Status` line from "Open" to "Applied YYYY-MM-DD" (or "Partially applied" if some items remain).
+2. Appending a `## Closeout` section at the end of the file with this structure:
+
+```markdown
+## Closeout — YYYY-MM-DD
+
+For each blocker (B-1, B-2, ...): how it was resolved.
+- **B-1**: <one-line description> → <resolution: applied as ADR rule N, accepted as risk, deferred to V2 with new ADR-NNNN>.
+- **B-2**: ...
+
+For non-blocking suggestions that were taken: list them similarly. Suggestions that were declined are noted with reason ("not pursued — out of scope for this change").
+```
+
+This makes the review document self-contained: future readers see both what was found and what came of it. The cycle compounds: the next review cites prior reviews when the same architectural seams resurface.
 
 ## Where to save
 
