@@ -1,16 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "krait-arch-marketplace",
-  "version": "0.2.1",
-  "description": "Marketplace hosting krait_arch — an architecture skills plugin for Claude Code.",
+  "name": "archforge-marketplace",
+  "version": "0.4.0-rc3",
+  "description": "Marketplace hosting archforge — an architecture skills plugin for Claude Code.",
   "owner": {
-    "name": "Igor Kramar",
-    "email": "i@ikramar.ru"
+    "name": "IgorKramar"
   },
   "plugins": [
     {
-      "name": "krait_arch",
-      "source": "./plugins/krait_arch",
+      "name": "archforge",
+      "source": "./plugins/archforge",
       "description": "Architecture toolkit: Discover → Design → Decide → Document → Review cycle, with skills for C4, ADR, system design, code review, and research.",
       "category": "development",
       "keywords": [
