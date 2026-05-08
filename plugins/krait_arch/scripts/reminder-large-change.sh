@@ -77,5 +77,35 @@ EOF
   done <<< "$NEW_TOP_DIRS"
 fi
 
+# --- 4. Many modules touched — suggest observe -------------------------------
+
+MODULES_TOUCHED=$(git diff --name-only HEAD 2>/dev/null \
+  | awk -F/ '{print $1}' \
+  | sort -u \
+  | grep -v -E '^(node_modules|\.next|\.nuxt|\.output|dist|build|target|\.venv|__pycache__|\.idea|\.vscode|\.cache|coverage|\.git|docs)$' \
+  | wc -l | tr -d ' ')
+
+# Last-observe marker prevents nagging on every commit.
+LAST_OBSERVE_FILE="docs/architecture/.last-observe"
+SHOULD_NUDGE_OBSERVE=0
+
+if [ "${MODULES_TOUCHED:-0}" -ge 4 ]; then
+  if [ ! -f "$LAST_OBSERVE_FILE" ]; then
+    SHOULD_NUDGE_OBSERVE=1
+  else
+    # Only nudge if observe was last run more than 14 days ago.
+    if find "$LAST_OBSERVE_FILE" -mtime +14 2>/dev/null | grep -q .; then
+      SHOULD_NUDGE_OBSERVE=1
+    fi
+  fi
+fi
+
+if [ "$SHOULD_NUDGE_OBSERVE" -eq 1 ]; then
+  cat <<EOF >&2
+[krait_arch] Reminder: ${MODULES_TOUCHED} modules touched in this session, and architectural observation hasn't run recently.
+            Consider \`/krait_arch:observe\` to surface implicit decisions, stale deferrals, or strategy-without-architecture gaps.
+EOF
+fi
+
 # Always succeed — these are nudges, not gates.
 exit 0

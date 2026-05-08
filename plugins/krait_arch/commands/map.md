@@ -117,6 +117,15 @@ After B1 decided: C2
 - **Don't fabricate decisions.** If `ARCHITECTURE.md` only has two open questions and one ADR, the map will be small. That's fine.
 - **Update on every cycle close.** When `/krait_arch:document` lands an ADR, the map should also be updated — that decision moves to "decided" with a link, and any decisions it unblocks are marked.
 
+## Sources of new map entries
+
+The map is updated from several sources:
+
+- **Manual addition by the architect** — most common.
+- **Cycle outputs** — when an ADR lands, the map's index updates.
+- **`/krait_arch:observe`** — when run, observe surfaces architectural gaps (implicit decisions, stale deferrals, strategy-without-architecture, drifted ADRs) and offers to add them to the map. This is the recommended way to keep the map honest about the project's actual state.
+- **External signals** — incidents, customer requests, regulatory changes can each produce a new map entry.
+
 ## Output to chat
 
 - The path of the saved/updated map.

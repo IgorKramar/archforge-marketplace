@@ -51,17 +51,21 @@ Each phase has a slash command. You can also run the whole cycle for a single pr
 | Command | Purpose |
 |---|---|
 | `/krait_arch:init` | Bootstrap project with `ARCHITECTURE.md` and `docs/architecture/` |
-| `/krait_arch:map` | Build a decision map — groups of open architectural decisions with dependencies and order |
+| `/krait_arch:upgrade` | Migrate the project's artifacts to the currently installed plugin version |
+| `/krait_arch:map` | Build or update the decision map (groups of open decisions, dependencies, suggested order) |
+| `/krait_arch:observe` | Find architectural gaps — implicit decisions in code, stale deferrals, strategy-without-architecture |
 | `/krait_arch:discover <topic>` | Phase 1 — gather context |
-| `/krait_arch:research <topic>` | Phase 1.5 — gather current information from the web (between Discover and Design) |
+| `/krait_arch:research <topic>` | Phase 1.5 — gather current information from the web |
 | `/krait_arch:design <topic>` | Phase 2 — generate alternatives |
 | `/krait_arch:decide <topic>` | Phase 3 — choose with justification |
 | `/krait_arch:document <topic>` | Phase 4 — emit ADR + update root doc |
 | `/krait_arch:review [path]` | Phase 5 — architectural code review (with closeout tracking) |
-| `/krait_arch:cycle <topic> [--scale=light\|standard\|deep]` | Run the full cycle end-to-end with detail scaled to complexity |
+| `/krait_arch:roast <ADR-NNNN\|path> [--roles=...]` | Adversarial multi-perspective review (5 roles) |
+| `/krait_arch:cycle <topic> [--scale=light\|standard\|deep]` | Run the full cycle end-to-end with detail scaled to complexity (auto-roast at deep) |
 | `/krait_arch:adr <topic>` | Shortcut: jump straight to ADR drafting |
-| `/krait_arch:c4 <level> <topic>` | Generate a C4 diagram (context/container/component) |
-| `/krait_arch:remember-compound-integration [--lang=en\|ru\|auto]` | Materialize the integration with the EveryInc `compound-engineering` plugin in the project's `AGENTS.md` |
+| `/krait_arch:diagram <type> <subject>` | Generate a diagram: `c4-context\|c4-container\|c4-component\|sequence\|state\|er\|deployment` |
+| `/krait_arch:c4 <level> <subject>` | Alias for `/krait_arch:diagram c4-<level>` (kept for compatibility) |
+| `/krait_arch:remember-compound-integration [--lang=en\|ru\|auto]` | Materialize integration with the EveryInc `compound-engineering` plugin |
 
 All commands respect the project's `ARCHITECTURE.md` and prior ADRs as primary context.
 
@@ -73,7 +77,7 @@ The router:
 
 The specialists (loaded by router or directly):
 
-- **`c4-diagrams`** — C4 model: context, container, component levels in Mermaid.
+- **`architectural-diagrams`** — five diagram types in Mermaid: C4 (context/container/component), sequence, state, entity-relationship, deployment. (Was `c4-diagrams` in earlier versions, expanded in 0.4.)
 - **`adr-writing`** — Architecture Decision Records (Nygard + MADR templates), lifecycle, anti-patterns.
 - **`system-design`** — distributed systems, scaling, databases, queues, caching, CAP/PACELC, latency budgets, microservices vs monolith, FAANG-style design walkthrough.
 - **`frontend-architecture`** — render strategies (CSR/SSR/SSG/ISR/RSC/Islands), state management matrix, module structure, performance, edge.
@@ -85,9 +89,19 @@ The specialists (loaded by router or directly):
 
 ### Sub-agents
 
-- **`architect`** — long-running architectural reasoning task, returns a structured proposal.
+Three structural roles for long-running tasks:
+
+- **`architect`** — long-running architectural reasoning, returns a structured proposal.
 - **`reviewer`** — autonomous architectural review of a directory or PR.
 - **`researcher`** — gathers up-to-date information from the web on a focused topic, returns a digest.
+
+Five roast roles for adversarial multi-perspective review (invoked via `/krait_arch:roast`):
+
+- **`devil-advocate`** — adversarial pressure-test. Failure modes, hidden assumptions, edge cases, concurrency bugs.
+- **`pragmatist`** — operational realism. On-call burden, real cost, skills/bus factor, deployment risk.
+- **`junior-engineer`** — clarity check from a fresh reader six months later. Undefined terms, unfollowable steps, broken cross-references.
+- **`compliance-officer`** — regulatory and security exposure. PII flows, jurisdiction, audit, incident response.
+- **`futurist`** — 1-3 year horizon. Structural drift, technology lifecycle, hiring, regulatory drift.
 
 Sub-agents are useful for tasks that would otherwise pollute the main thread with research or large reviews.
 

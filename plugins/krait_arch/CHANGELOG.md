@@ -2,6 +2,60 @@
 
 All notable changes to `krait_arch` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0-rc1] - Adversarial roast, project upgrade, gap observation, multi-type diagrams
+
+The 0.4 line builds on the cycle established in 0.3 with three things the architect actually wants but didn't have: a way to attack a decision from multiple angles before declaring it final, a way to find architectural decisions that have been made implicitly (in code, in deferrals) but not documented, and proper diagram support beyond just C4.
+
+### Added — adversarial review
+
+- **Five new sub-agents** for adversarial multi-perspective review:
+  - `devil-advocate` — pressure-test for failure modes, hidden assumptions, edge cases.
+  - `pragmatist` — operational realism: on-call, real cost, skills, deployment risk.
+  - `junior-engineer` — clarity check from a fresh reader six months later.
+  - `compliance-officer` — regulatory and security exposure.
+  - `futurist` — 1–3 year horizon, structural drift, ecosystem trends.
+  - The five roles have **strict non-overlapping scopes**, each with explicit "what I cover / what I do NOT cover" lists. This prevents the typical "5 agents, 5× duplication" problem.
+- **New command `/krait_arch:roast <target> [--roles=...]`** — runs all five (or a subset) against the same artifact and aggregates findings into a structured directory in `docs/architecture/reviews/<date>-roast-<slug>/` with a `00-summary.md` plus one document per role.
+- **Auto-roast in `/krait_arch:cycle --scale=deep`** between Decide and Document. The user can apply findings, re-roast, or step back to Design before the ADR is written.
+
+### Added — project hygiene
+
+- **New command `/krait_arch:upgrade`** — migrates the project's artifacts to the currently installed plugin version. Idempotent, version-marker-gated (`docs/architecture/.krait-arch-version`), confirms before mutating files. Surfaces the changelog between marker and installed version. Does **not** update the plugin code itself — that's a Claude Code action.
+- **New command `/krait_arch:observe`** — architectural gap analysis. Finds:
+  - Implicit decisions in code that no ADR documents.
+  - Stale deferrals from old ADRs ("V2: ..." that's now V2 or never).
+  - Strategy items not covered by any ADR.
+  - Pattern divergences across modules.
+  - Drifted ADRs (code no longer matches).
+  - Anti-pattern occurrences from `ARCHITECTURE.md`.
+  Produces a prioritized list capped at 15, then offers to add selected items to `decision-map.md`.
+
+### Added — diagrams
+
+- **Skill `c4-diagrams` renamed and extended to `architectural-diagrams`** with five diagram types: C4 (context/container/component), sequence, state, entity-relationship, deployment. All Mermaid. Each type has dedicated rules, templates, and anti-patterns.
+- **New command `/krait_arch:diagram <type> <subject>`** — single entry point for all diagram types.
+- **`/krait_arch:c4` is now an alias** for `/krait_arch:diagram c4-<level>`. Backward compatible; old workflows keep working.
+
+### Changed
+
+- The `reminder-large-change.sh` hook now also reminds about `/krait_arch:observe` when ≥4 modules have been touched in a session and observe hasn't run in 14+ days.
+- Plugin and marketplace versions: `0.4.0-rc1`.
+- Plugin README and `README.ru.md` updated with the new commands, agents, and skill renames.
+
+### Migration from 0.3
+
+Run `/krait_arch:upgrade` to apply migrations. Specifically:
+- The skill rename `c4-diagrams` → `architectural-diagrams` is internal; old `/krait_arch:c4` calls keep working via the alias.
+- Existing `docs/architecture/diagrams/` files are untouched. New diagrams use the type-prefixed naming `<type>-<subject>.md`.
+- Existing reviews don't gain auto-roast retroactively. Run `/krait_arch:roast` manually on important ADRs.
+- The `.krait-arch-version` marker is created on first `/krait_arch:upgrade` run.
+
+### Notes
+
+- The roast roles deliberately have minimal overlap. If you find one straying into another's territory, that's a bug — file an issue. The intended behavior is: each role is its own lens, not five views of the same lens.
+- `observe` is conservative by default — it suggests, never auto-modifies the decision map. The user confirms which gaps to add.
+- `upgrade` is project-side only. The plugin code itself is updated through Claude Code's native plugin commands; `/krait_arch:upgrade` adapts the project to the new plugin version that's already installed.
+
 ## [0.3.0-rc1] - Release candidate based on real-world cycle experience
 
 This RC is forged from running v0.2 through one full architecturally-significant cycle on a real project (the Krait SaaS — AI-driven landing page builder). Every change below is traceable to an observation from that run.

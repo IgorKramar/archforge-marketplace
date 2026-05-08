@@ -55,11 +55,13 @@ Walk these phases **in order**, pausing for user input at each gate:
 4. **Decide** (`/krait_arch:decide` logic):
    - Produce the decision summary.
    - Pause: confirm with the user. If they have second thoughts, loop back to design.
+   - **At `deep` scale**: automatically invoke `/krait_arch:roast` on the decision summary before proceeding to Document. The user reviews the roast findings and chooses one of: (a) apply findings and proceed to Document, (b) apply findings and re-roast, (c) step back to Design or Discover.
 
 5. **Document** (`/krait_arch:document` logic):
    - Write the ADR.
    - Update `ARCHITECTURE.md` and diagrams.
    - Update the decision index.
+   - **At `deep` scale, if a roast was run**: link the roast summary in the ADR's review trail.
 
 6. **Hand-off**:
    - Tell the user the ADR number, the files touched, and the next step (implementing, then `/krait_arch:review`).
