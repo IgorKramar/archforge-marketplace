@@ -1,113 +1,36 @@
-# archforge marketplace
+# `archforge-marketplace` — переехал
 
 [English](./README.md) | **Русский**
 
-Маркетплейс плагинов [Claude Code](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces), содержащий **`archforge`** — архитектурный инструментарий, превращающий Claude Code в собеседника уровня staff/principal-инженера для архитектурных задач.
+> **Этот marketplace поглощён.** Плагин `archforge` теперь живёт в **[`kramar-studio-marketplace`](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace)** рядом с `product` и переименован в **`architect`**. Изменение действует с 2026-05-10 (архитектурное обоснование — в [ADR-0001](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/docs/architecture/decisions/0001-absorb-archforge-into-kramar-studio-marketplace.md) нового marketplace).
 
-## Что внутри
+## Команды миграции
 
-| Плагин | Назначение |
-|---|---|
-| **`archforge`** | Цикл Discover → Design → Decide → Document → Review. Маршрутизирующий скилл `architect` плюс специализированные скиллы (C4, ADR, проектирование систем, фронт/бэк/AI-агенты, архитектурное код-ревью, исследование). Slash-команды, сабагенты, мягкие предупреждающие хуки. Интеграция с плагином Compound Engineering от EveryInc. |
-
-## Установка
-
-В Claude Code:
+Если у тебя установлен `archforge-marketplace`, выполни:
 
 ```text
-/plugin marketplace add https://github.com/IgorKramar/archforge-marketplace
-/plugin install archforge@archforge-marketplace
+/plugin marketplace remove archforge-marketplace                           # опционально
+/plugin marketplace add https://github.com/Kramar-IT-Studio/kramar-studio-marketplace
+/plugin install architect@kramar-studio-marketplace
 ```
 
-Для локальной разработки (сначала склонируй репозиторий):
+## Что изменилось (breaking)
 
-```text
-/plugin marketplace add /absolute/path/to/archforge-marketplace
-/plugin install archforge@archforge-marketplace
-```
+- **Имя плагина:** `archforge` → `architect`. Все slash-команды теперь `/architect:*` вместо `/archforge:*`.
+- **Router skill:** `archforge:architect` → `architect:role`. Скилл, активирующий архитектурную persona, переименован, чтобы избежать collision'а `architect:architect` и установить pattern `<plugin>:role` для будущих плагинов suite.
+- **Marker-файл:** маркер версии в проекте теперь `.architect-version` (был `.archforge-version`). В каждом проекте, где раньше был инициализирован `archforge`, переименуй файл или перезапусти `/architect:init`.
+- **Маркеры integration-блока:** HTML-комментарии `<!-- archforge × compound-engineering integration -->` в `AGENTS.md` теперь пишутся как `<!-- architect × compound-engineering integration -->`. Перезапусти `/architect:remember-compound-integration` для обновления.
 
-После установки запусти `/reload-plugins` (или перезапусти Claude Code) и проверь через `/plugin list`.
+Полный список breaking changes с обоснованием — в [CHANGELOG entry для v1.0.0](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/plugins/architect/CHANGELOG.md) нового плагина.
 
-## Быстрый старт
+## Почему
 
-В любом проекте:
+У `archforge-marketplace` и `kramar-studio-marketplace` был один автор, одна методология (цикл + frontmatter + lifecycle + soft hooks + push-back tone) и одна аудитория (соло-инди и маленькие студии, строящие продукты с Claude Code). Поддержание их двумя раздельными marketplace порождало вопросы про cross-marketplace зависимости (как product-артефакты ссылаются на ADR из соседа) и расщепляло documentation surface. Поглощение `archforge` (теперь `architect`) в studio marketplace делает conceptual coherence структурной, а не документарной, и согласует именование с роль-плагинами suite (`product`, `ops`, `security`).
 
-```text
-/archforge:init
-```
+## Что остаётся здесь
 
-Эта команда подготавливает проект: создаёт `ARCHITECTURE.md` и каркас `docs/architecture/` (decisions, diagrams, research, reviews).
-
-Дальше — цикл:
-
-```text
-/archforge:discover     # фаза 1 — собрать ограничения, силы, прецеденты
-/archforge:design       # фаза 2 — предложить 2–3 альтернативы с компромиссами
-/archforge:decide       # фаза 3 — выбрать одну с явным обоснованием
-/archforge:document     # фаза 4 — написать ADR + обновить ARCHITECTURE.md
-/archforge:review       # фаза 5 — архитектурное ревью кода
-```
-
-Или сразу к специализированной команде:
-
-```text
-/archforge:adr "переход с REST на gRPC для межсервисного взаимодействия"
-/archforge:c4 container "веб-приложение и его зависимости"
-/archforge:cycle "введение очереди для исходящих уведомлений"
-```
-
-Маршрутизирующий скилл `architect` активируется автоматически, как только в разговоре появляется архитектурная тема — даже без slash-команд.
-
-Полная документация плагина — в [`plugins/archforge/README.ru.md`](./plugins/archforge/README.ru.md).
-
-## Интеграция с Compound Engineering
-
-Если в проекте установлен плагин [`compound-engineering`](https://github.com/EveryInc/compound-engineering-plugin) от EveryInc, выполни один раз:
-
-```text
-/archforge:remember-compound-integration
-```
-
-Эта команда записывает в `AGENTS.md` проекта правила взаимодействия двух плагинов. После этого Claude в любой сессии знает, как чередовать архитектурный цикл `archforge` с цикломом CE (Brainstorm → Plan → Work → Review → Compound) — без дублирования работы.
-
-## Структура распространения
-
-```
-archforge-marketplace/
-├── .claude-plugin/
-│   └── marketplace.json        ← это ищет /plugin marketplace add
-├── README.md                   ← английская версия
-├── README.ru.md                ← этот файл
-└── plugins/
-    └── archforge/             ← сам плагин
-        ├── .claude-plugin/
-        │   └── plugin.json
-        ├── commands/
-        ├── agents/
-        ├── skills/
-        ├── hooks/
-        ├── scripts/
-        ├── templates/
-        ├── README.md
-        └── README.ru.md
-```
-
-Манифесты маркетплейса и плагина намеренно разделены. Один маркетплейс может хостить несколько плагинов; один плагин может быть подцеплен из разных маркетплейсов. Сохраняй это разделение, если будешь форкать.
-
-## Публикация своего форка
-
-1. Форкни или скопируй этот репозиторий.
-2. Обнови `.claude-plugin/marketplace.json` — поля `name` и `owner`.
-3. Обнови `plugins/archforge/.claude-plugin/plugin.json`, если меняешь идентичность плагина (переименование, версия).
-4. Запушь в публичный Git-хост (GitHub / GitLab / собственный сервер).
-5. Пользователи устанавливают через `/plugin marketplace add <url-репозитория>`.
-
-Для распространения без Git маркетплейс можно отдавать как JSON-эндпоинт — см. [официальную документацию по marketplace плагинов](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces).
-
-## Дорожная карта
-
-План на версии 0.5, 0.6, 0.7 описан в [ROADMAP.md](./ROADMAP.md). Документ англоязычный — там же зафиксировано, что **намеренно остаётся за пределами** плагина (anti-roadmap), чтобы не было ложных ожиданий.
+Этот репозиторий (и его git-история) сохраняется как redirect-stub. Старые ссылки продолжают работать. Pinned/cloned/vendored установки, указывающие на этот репо, увидят `plugins[]: []` и понятную ошибку `plugin not found` при попытке `/plugin install archforge@archforge-marketplace`. Репо **не архивировано** — issues и discussions остаются доступны для пользователей в процессе миграции.
 
 ## Лицензия
 
-MIT — см. `LICENSE` внутри директории плагина.
+MIT — см. [`LICENSE`](./LICENSE).

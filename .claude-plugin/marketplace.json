@@ -1,25 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "archforge-marketplace",
-  "version": "0.4.0-rc3",
-  "description": "Marketplace hosting archforge — an architecture skills plugin for Claude Code.",
+  "version": "1.0.0-stub",
+  "description": "MOVED — archforge plugin has been absorbed into kramar-studio-marketplace as `architect`. See README.md for migration commands.",
   "owner": {
     "name": "IgorKramar"
   },
-  "plugins": [
-    {
-      "name": "archforge",
-      "source": "./plugins/archforge",
-      "description": "Architecture toolkit: Discover → Design → Decide → Document → Review cycle, with skills for C4, ADR, system design, code review, and research.",
-      "category": "development",
-      "keywords": [
-        "architecture",
-        "system-design",
-        "adr",
-        "c4",
-        "code-review",
-        "compound-engineering"
-      ]
-    }
-  ]
+  "plugins": []
 }
