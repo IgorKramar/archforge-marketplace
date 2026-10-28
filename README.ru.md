@@ -12,6 +12,8 @@
 
 [Миграция](#команды-миграции) · [Изменения](#что-изменилось-breaking) · [Совместимость](#что-остаётся-здесь)
 
+[![MIT](https://img.shields.io/badge/license-MIT-9ece6a?style=flat-square)](LICENSE)
+
 </div>
 
 > **Этот marketplace поглощён.** Плагин `archforge` теперь живёт в **[`kramar-studio-marketplace`](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace)** рядом с `product` и переименован в **`architect`**. Изменение действует с 2026-05-10 (архитектурное обоснование — в [ADR-0001](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/docs/architecture/decisions/0001-absorb-archforge-into-kramar-studio-marketplace.md) нового marketplace).
@@ -45,4 +47,4 @@
 
 ## Лицензия
 
-Прежний README указывает MIT, но в текущем снимке переходника файла лицензии нет. При использовании исторического кода проверяйте лицензию в исходной ревизии.
+[MIT](LICENSE) · Copyright © 2026 Igor Kramar. Сторонние материалы и ресурсы по ссылкам сохраняют собственные лицензии и права.

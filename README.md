@@ -12,6 +12,8 @@
 
 [Migrate](#migration-commands) · [Breaking changes](#what-changed-breaking) · [Compatibility](#what-stays-here)
 
+[![MIT](https://img.shields.io/badge/license-MIT-9ece6a?style=flat-square)](LICENSE)
+
 </div>
 
 > **This marketplace has been absorbed.** The `archforge` plugin now lives in **[`kramar-studio-marketplace`](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace)** as a peer of `product`, and was renamed to **`architect`**. The change is effective as of 2026-05-10 (see [ADR-0001](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/docs/architecture/decisions/0001-absorb-archforge-into-kramar-studio-marketplace.md) in the new marketplace for the architectural rationale).
@@ -45,4 +47,4 @@ This repository and its history remain as a redirect. Old links continue to reso
 
 ## License
 
-The previous README declares MIT, but this redirect snapshot does not include a license file. Check the license at the source revision when reusing historical code.
+[MIT](LICENSE) · Copyright © 2026 Igor Kramar. Third-party materials and linked resources retain their respective licenses and rights.
