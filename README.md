@@ -1,6 +1,20 @@
-# `archforge-marketplace` — moved
+<div align="center">
 
-**English** | [Русский](./README.ru.md)
+# Archforge Marketplace
+
+**English** · [Русский](README.ru.md)
+
+### The plugin moved. The old links stay.
+
+![Markdown](https://img.shields.io/badge/Markdown-7aa2f7?style=flat-square)
+![JSON](https://img.shields.io/badge/JSON-e0af68?style=flat-square)
+![Status](https://img.shields.io/badge/status-moved-e0af68?style=flat-square)
+
+[Migrate](#migration-commands) · [Breaking changes](#what-changed-breaking) · [Compatibility](#what-stays-here)
+
+[![MIT](https://img.shields.io/badge/license-MIT-9ece6a?style=flat-square)](LICENSE)
+
+</div>
 
 > **This marketplace has been absorbed.** The `archforge` plugin now lives in **[`kramar-studio-marketplace`](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace)** as a peer of `product`, and was renamed to **`architect`**. The change is effective as of 2026-05-10 (see [ADR-0001](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/docs/architecture/decisions/0001-absorb-archforge-into-kramar-studio-marketplace.md) in the new marketplace for the architectural rationale).
 
@@ -25,12 +39,12 @@ The full breaking-change list with rationale is in the new plugin's [CHANGELOG e
 
 ## Why
 
-`archforge-marketplace` and `kramar-studio-marketplace` had the same author, the same methodology (cycle + frontmatter + lifecycle + soft hooks + push-back tone), and the same audience (solo-indies and small studios building products with Claude Code). Maintaining them as two separate marketplaces created cross-marketplace dependency questions (how `product` artifacts cross-link to ADRs from the soused) and split documentation surface. Absorbing `archforge` (renamed `architect`) into the studio marketplace makes the conceptual coherence structural rather than documentary, and aligns naming with the role-named peers in the suite (`product`, `ops`, `security`).
+The two marketplaces shared an author, methodology and audience. Combining them removes separate installation and documentation paths and keeps architecture and product material together. The name `architect` follows the role-based naming used by `product`, `ops` and `security`.
 
 ## What stays here
 
-This repo (and its git history) is preserved as a redirect-stub. Old links continue to resolve. Pinned/cloned/vendored installs that point at this repo will see `plugins[]: []` and a clear `plugin not found` response on `/plugin install archforge@archforge-marketplace`. The repo is **not archived** so issues and discussions remain reachable for users in the middle of migrating.
+This repository and its history remain as a redirect. Old links continue to resolve. Installs from the current revision receive an empty `plugins[]: []` list, so `/plugin install archforge@archforge-marketplace` no longer finds the plugin. Use the migration commands above for a new installation.
 
 ## License
 
-MIT — see [`LICENSE`](./LICENSE).
+[MIT](LICENSE) · Copyright © 2026 Igor Kramar. Third-party materials and linked resources retain their respective licenses and rights.

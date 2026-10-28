@@ -1,6 +1,20 @@
-# `archforge-marketplace` — переехал
+<div align="center">
 
-[English](./README.md) | **Русский**
+# Archforge Marketplace
+
+[English](README.md) · **Русский**
+
+### Плагин переехал. Старые ссылки сохранены.
+
+![Markdown](https://img.shields.io/badge/Markdown-7aa2f7?style=flat-square)
+![JSON](https://img.shields.io/badge/JSON-e0af68?style=flat-square)
+![Status](https://img.shields.io/badge/status-moved-e0af68?style=flat-square)
+
+[Миграция](#команды-миграции) · [Изменения](#что-изменилось-breaking) · [Совместимость](#что-остаётся-здесь)
+
+[![MIT](https://img.shields.io/badge/license-MIT-9ece6a?style=flat-square)](LICENSE)
+
+</div>
 
 > **Этот marketplace поглощён.** Плагин `archforge` теперь живёт в **[`kramar-studio-marketplace`](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace)** рядом с `product` и переименован в **`architect`**. Изменение действует с 2026-05-10 (архитектурное обоснование — в [ADR-0001](https://github.com/Kramar-IT-Studio/kramar-studio-marketplace/blob/main/docs/architecture/decisions/0001-absorb-archforge-into-kramar-studio-marketplace.md) нового marketplace).
 
@@ -17,7 +31,7 @@
 ## Что изменилось (breaking)
 
 - **Имя плагина:** `archforge` → `architect`. Все slash-команды теперь `/architect:*` вместо `/archforge:*`.
-- **Router skill:** `archforge:architect` → `architect:role`. Скилл, активирующий архитектурную persona, переименован, чтобы избежать collision'а `architect:architect` и установить pattern `<plugin>:role` для будущих плагинов suite.
+- **Router skill:** `archforge:architect` → `architect:role`. Скилл архитектурной роли переименован, чтобы избежать повтора `architect:architect` и использовать схему `<plugin>:role`.
 - **Marker-файл:** маркер версии в проекте теперь `.architect-version` (был `.archforge-version`). В каждом проекте, где раньше был инициализирован `archforge`, переименуй файл или перезапусти `/architect:init`.
 - **Маркеры integration-блока:** HTML-комментарии `<!-- archforge × compound-engineering integration -->` в `AGENTS.md` теперь пишутся как `<!-- architect × compound-engineering integration -->`. Перезапусти `/architect:remember-compound-integration` для обновления.
 
@@ -25,12 +39,12 @@
 
 ## Почему
 
-У `archforge-marketplace` и `kramar-studio-marketplace` был один автор, одна методология (цикл + frontmatter + lifecycle + soft hooks + push-back tone) и одна аудитория (соло-инди и маленькие студии, строящие продукты с Claude Code). Поддержание их двумя раздельными marketplace порождало вопросы про cross-marketplace зависимости (как product-артефакты ссылаются на ADR из соседа) и расщепляло documentation surface. Поглощение `archforge` (теперь `architect`) в studio marketplace делает conceptual coherence структурной, а не документарной, и согласует именование с роль-плагинами suite (`product`, `ops`, `security`).
+У двух marketplace был один автор, общая методология и аудитория. Объединение убирает необходимость поддерживать отдельные установки и согласовывать ссылки между архитектурными и продуктовыми материалами. Имя `architect` соответствует роли плагина рядом с `product`, `ops` и `security`.
 
 ## Что остаётся здесь
 
-Этот репозиторий (и его git-история) сохраняется как redirect-stub. Старые ссылки продолжают работать. Pinned/cloned/vendored установки, указывающие на этот репо, увидят `plugins[]: []` и понятную ошибку `plugin not found` при попытке `/plugin install archforge@archforge-marketplace`. Репо **не архивировано** — issues и discussions остаются доступны для пользователей в процессе миграции.
+Этот репозиторий и его история сохраняются как указатель на новое место. Старые ссылки продолжают работать. Установки из текущей версии этого репозитория получают пустой список `plugins[]: []`; команда `/plugin install archforge@archforge-marketplace` больше не найдёт плагин. Для новой установки используйте команды миграции выше.
 
 ## Лицензия
 
-MIT — см. [`LICENSE`](./LICENSE).
+[MIT](LICENSE) · Copyright © 2026 Igor Kramar. Сторонние материалы и ресурсы по ссылкам сохраняют собственные лицензии и права.
